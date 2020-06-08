@@ -1,0 +1,74 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Editable table</title>
+  <style>
+    body{ padding: 1% 3%; color: rgb(119, 119, 119); }
+    h1{ color:#333 }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.1/pure-min.css">
+</head>
+
+<body>
+<h1>Football Kenya Federation FKF</h1>
+<table id="editable" class="pure-table pure-table-bordered">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Team</th>
+            <th>P</th>
+            <th>W</th>
+            <th>D</th>
+            <th>L</th>
+            <th>GF</th>
+            <th>GA</th>
+            <th>GD</th>
+            <th>Pts</th>
+        </tr>
+    </thead>
+
+    <tbody>
+      <script type="text/javascript">
+      for (var fors = 1; fors <= 16; fors++) {
+        document.write(`<tr>
+                    <td>${fors}</td>
+                    <td>Tusker</td>
+                    <td id="played${fors}" class="editable">0</td>
+                    <td id="wins${fors}" class="editable">0</td>
+                    <td id="draws${fors}" class="editable">0</td>
+                    <td id="loss${fors}" class="uneditable">0</td>
+                    <td id="gf${fors}" class="editable">0</td>
+                    <td id="ga${fors}" class="editable">0</td>
+                    <td id="gd${fors}" class="uneditable">0</td>
+                    <td id="pts${fors}" class="uneditable">0</td>
+                </tr>`);
+      }
+      </script>
+    </tbody>
+</table>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script src="mindmup-editabletable.js"></script>
+<script>
+	$('#editable').editableTableWidget();
+  $('#editable td.uneditable').on('change', function(evt, newValue) {
+	return false;
+});
+$('#editable td.editable').on('change', function(evt, newValue) {
+  if (newValue >= 0) {
+    for (var fors = 1; fors <= 16; fors++) {
+      var p = parseInt(document.getElementById(`played${fors}`).innerHTML);
+      var w = parseInt(document.getElementById(`wins${fors}`).innerHTML);
+      var d = parseInt(document.getElementById(`draws${fors}`).innerHTML);
+      var gf = parseInt(document.getElementById(`gf${fors}`).innerHTML);
+      var ga = parseInt(document.getElementById(`ga${fors}`).innerHTML);
+      document.getElementById(`loss${fors}`).innerHTML = p-(w+d);
+      document.getElementById(`gd${fors}`).innerHTML = gf - ga;
+      document.getElementById(`pts${fors}`).innerHTML = (w*3) + (d*1);
+    }
+  }
+});
+</script>
+</body>
+</html>
